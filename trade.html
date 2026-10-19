@@ -2,46 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trade | Donschempro</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>DON SCHEM PRO - Tag Options Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://s3.tradingview.com/tv.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif}
-body{background:#070a14;color:#fff}
-nav{display:flex;justify-content:space-between;padding:18px 24px;background:#0d1225;border-bottom:1px solid #1e2a4a;align-items:center}
-.logo{font-weight:700;font-size:22px}.logo span{color:#3b82f6}
-.btn{background:#3b82f6;color:#fff;padding:10px 20px;border-radius:10px;border:none;font-weight:700}
-.hero{padding:20px}
-.card{background:#10172f;border:1px solid #1e2a4a;border-radius:18px;padding:16px;margin-bottom:16px}
-#tv_chart{height:420px;border-radius:12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat{font-size:12px;color:#8b9bb4}.val{font-size:18px;font-weight:700;margin-top:4px}
-.green{color:#22c55e}
-.trade-box{display:flex;gap:10px;margin-top:14px}
-.trade-box button{flex:1;padding:16px;border-radius:12px;border:none;font-weight:800;font-size:16px}
-.buy{background:#22c55e;color:#000}.sell{background:#ef4444;color:#fff}
-input{width:100%;background:#0a1024;border:1px solid #1e2a4a;border-radius:10px;padding:14px;color:#fff;margin-top:10px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#0a0c1a;color:#fff;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:56px;background:#12152b;border-bottom:1px solid #1e2747;display:flex;align-items:center;justify-content:space-between;padding:0 10px;gap:8px}
+.logo{font-weight:800;font-size:16px;letter-spacing:.5px}.logo span{color:#3b82f6}
+.assets-btn{background:#1c2242;border:1px solid #2a3563;padding:8px 12px;border-radius:8px;display:flex;align-items:center;gap:6px;font-weight:700;font-size:13px}
+.payout{color:#22c55e;font-size:12px;font-weight:800}
+.bal{background:#1c2242;border:1px solid #2a3563;padding:6px 12px;border-radius:8px;text-align:right}
+.bal small{color:#7a8ab5;font-size:10px;display:block}.bal b{font-size:13px}
+.main{flex:1;display:flex;overflow:hidden}
+.left{width:200px;background:#12152b;border-right:1px solid #1e2747;overflow-y:auto;display:none}
+.left.show{display:block;position:absolute;z-index:10;height:calc(100% - 56px);width:260px}
+.left h4{padding:12px;font-size:11px;color:#5a6c9b;letter-spacing:1px}
+.asset-item{padding:10px 12px;display:flex;justify-content:space-between;border-bottom:1px solid #1a2040;font-size:13px}
+.asset-item.active{background:#1c2242;border-left:3px solid #3b82f6}
+.center{flex:1;display:flex;flex-direction:column;background:#070a18}
+#tv_chart{flex:1}
+.trades-bar{height:110px;background:#12152b;border-top:1px solid #1e2747;padding:8px 10px;overflow-x:auto;white-space:nowrap}
+.trade-chip{display:inline-block;background:#1c2242;border:1px solid #2a3563;border-radius:10px;padding:8px 12px;margin-right:8px;min-width:140px}
+.trade-chip b{font-size:12px}.trade-chip small{color:#7a8ab5;font-size:10px}
+.right{width:310px;background:#12152b;border-left:1px solid #1e2747;display:flex;flex-direction:column;padding:12px;gap:12px}
+.sec{font-size:10px;color:#5a6c9b;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.inp{background:#0e1226;border:1px solid #232e55;border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center}
+.inp input{background:transparent;border:none;color:#fff;font-weight:800;font-size:18px;width:120px;outline:none}
+.step{display:flex;gap:6px}.step button{width:32px;height:32px;background:#1c2242;border:1px solid #2a3563;border-radius:8px;color:#fff}
+.times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.times button{background:#0e1226;border:1px solid #232e55;padding:9px;border-radius:10px;color:#7a8ab5;font-size:11px;font-weight:700}
+.times button.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.profit{background:#0e1226;border:1px dashed #2a3563;border-radius:12px;padding:12px;text-align:center}
+.profit .big{font-size:20px;font-weight:800;color:#22c55e}
+.btn{padding:15px;border:none;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer}
+.up{background:linear-gradient(180deg,#22c55e,#16a34a);color:#000}
+.down{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:20}
+.modal.show{display:flex}
+.box{background:#151a33;border:1px solid #2a3563;border-radius:16px;padding:20px;width:90%;max-width:340px}
+.box input{width:100%;background:#0e1226;border:1px solid #2a3563;border-radius:10px;padding:14px;color:#fff;margin:10px 0}
+@media(max-width:900px){.main{flex-direction:column}.right{width:100%;height:48%;overflow-y:auto}.center{height:52%}.left{width:100%}}
 </style>
 </head>
 <body>
-<nav><div class="logo">DONSCHEM<span>PRO</span></div><a href="index.html"><button class="btn">Home</button></a></nav>
-<div class="hero">
-<div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><h3>BTC/USDT • BINANCE</h3><span class="green">● LIVE</span></div><div id="tv_chart"></div></div>
-<div class="grid">
-<div class="card"><div class="stat">BALANCE</div><div class="val">$12,450.00</div><div class="stat green">+ $340.20 today</div></div>
-<div class="card"><div class="stat">PnL (24h)</div><div class="val green">+5.42%</div><div class="stat">Win Rate 78%</div></div>
+<div class="topbar">
+<div class="logo">DON SCHEM <span>PRO</span></div>
+<div class="assets-btn" onclick="toggleAssets()">📊 EUR/USD OTC <span class="payout">+92%</span> ▼</div>
+<div class="bal" onclick="openDep()"><small>DEMO BALANCE</small><b id="balText">$12,450.00</b></div>
 </div>
-<div class="card">
-<h3>Quick Trade</h3>
-<input id="amount" type="number" value="100" placeholder="Amount USDT">
-<div class="trade-box"><button class="buy" onclick="trade('BUY')">LONG / BUY</button><button class="sell" onclick="trade('SELL')">SHORT / SELL</button></div>
-<p id="msg" style="margin-top:12px;color:#8b9bb4;font-size:13px;text-align:center">Select amount and trade. Demo mode.</p>
+<div class="main">
+<div class="left" id="leftMenu">
+<h4>OTC ASSETS - TAG OPTION STYLE</h4>
+<div id="assetList"></div>
+</div>
+<div class="center">
+<div id="tv_chart"></div>
+<div class="trades-bar" id="tradesBar"><small style="color:#5a6c9b">No open trades - Place UP or DOWN</small></div>
+</div>
+<div class="right">
+<div><div class="sec">TRADING AMOUNT (KSH)</div><div class="inp"><span>KSh</span><input id="amount" type="number" value="1000"><div class="step"><button onclick="ch(-100)">-</button><button onclick="ch(100)">+</button></div></div></div>
+<div><div class="sec">EXPIRY TIME - TAG OPTION</div><div class="times"><button onclick="setE(this,5)">5s</button><button onclick="setE(this,15)">15s</button><button class="active" onclick="setE(this,30)">30s</button><button onclick="setE(this,60)">1m</button><button onclick="setE(this,120)">2m</button><button onclick="setE(this,300)">5m</button><button onclick="setE(this,600)">10m</button><button onclick="setE(this,1800)">30m</button></div></div>
+<div class="profit"><div class="sec">POTENTIAL PROFIT</div><div class="big" id="profitTxt">+ KSh 920 (92%)</div><div class="sec">IF PRICE GOES YOUR WAY</div></div>
+<button class="btn up" onclick="place('UP')">↑ UP - CALL</button>
+<button class="btn down" onclick="place('DOWN')">↓ DOWN - PUT</button>
+<div class="sec" style="text-align:center">Payout 92% • OTC Market • Don Schem Pro Platform</div>
 </div>
 </div>
+
+<div class="modal" id="depModal"><div class="box"><h3>Deposit via MPesa</h3><p style="color:#7a8ab5;font-size:12px;margin:6px 0">Tag Option style deposit</p><input id="phone" placeholder="07XXXXXXXX"><input id="depAmt" type="number" placeholder="Amount KSh (Min 500)"><button class="btn up" style="width:100%;margin-top:10px" onclick="deposit()">Deposit Now</button><button onclick="closeDep()" style="width:100%;background:transparent;border:none;color:#7a8ab5;margin-top:10px">Close</button></div></div>
+
 <script>
-new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","interval":"15","timezone":"Africa/Nairobi","theme":"dark","style":"1","locale":"en","toolbar_bg":"#10172f","enable_publishing":false,"hide_top_toolbar":false,"save_image":false,"container_id":"tv_chart"});
-function trade(side){const amt=document.getElementById('amount').value;document.getElementById('msg').innerHTML=`✅ ${side} ${amt} USDT executed! (Demo)`;document.getElementById('msg').style.color='#fff'}
+let assets=[{s:"FX:EURUSD",n:"EUR/USD OTC",p:92},{s:"FX:GBPUSD",n:"GBP/USD OTC",p:90},{s:"FX:USDJPY",n:"USD/JPY OTC",p:88},{s:"BINANCE:BTCUSDT",n:"BTC/USD OTC",p:85},{s:"FX:AUDUSD",n:"AUD/USD OTC",p:89},{s:"FX:USDCAD",n:"USD/CAD OTC",p:87},{s:"OANDA:EURJPY",n:"EUR/JPY OTC",p:91},{s:"FX:EURGBP",n:"EUR/GBP OTC",p:88}];
+let cur=assets[0],expiry=30,balance=12450;
+let tv=new TradingView.widget({"autosize":true,"symbol":cur.s,"interval":"1","timezone":"Africa/Nairobi","theme":"dark","style":"1","locale":"en","toolbar_bg":"#12152b","enable_publishing":false,"hide_side_toolbar":true,"container_id":"tv_chart"});
+function renderAssets(){let h="";assets.forEach((a,i)=>{h+=`<div class="asset-item ${a.n==cur.n?'active':''}" onclick="selectAsset(${i})"><span>${a.n}</span><b style="color:#22c55e">+${a.p}%</b></div>`});document.getElementById('assetList').innerHTML=h;}
+function toggleAssets(){document.getElementById('leftMenu').classList.toggle('show');}
+function selectAsset(i){cur=assets[i];document.querySelector('.assets-btn').innerHTML=`📊 ${cur.n} <span class="payout">+${cur.p}%</span> ▼`;document.getElementById('leftMenu').classList.remove('show');new TradingView.widget({"autosize":true,"symbol":cur.s,"interval":"1","timezone":"Africa/Nairobi","theme":"dark","style":"1","locale":"en","toolbar_bg":"#12152b","enable_publishing":false,"hide_side_toolbar":true,"container_id":"tv_chart"});calc();}
+function ch(v){let e=document.getElementById('amount');e.value=Math.max(100,parseInt(e.value||0)+v);calc();}
+function setE(el,s){document.querySelectorAll('.times button').forEach(b=>b.classList.remove('active'));el.classList.add('active');expiry=s;}
+function calc(){let a=parseInt(document.getElementById('amount').value||0);document.getElementById('profitTxt').innerText=`+ KSh ${(a*cur.p/100).toFixed(0)} (${cur.p}%)`;}
+document.getElementById('amount').addEventListener('input',calc);
+function place(dir){let amt=parseInt(document.getElementById('amount').value);if(amt<100)return alert('Min KSh 100');let id=Date.now();let bar=document.getElementById('tradesBar');if(bar.innerHTML.includes('No open'))bar.innerHTML='';bar.innerHTML+=`<div class="trade-chip" id="t${id}"><b>${cur.n} ${dir}</b><br><small>KSh ${amt} • ${expiry}s • <span id="c${id}">${expiry}s</span></small></div>`;let c=expiry;let int=setInterval(()=>{c--;let el=document.getElementById('c'+id);if(el)el.innerText=c+'s';if(c<=0){clearInterval(int);let win=Math.random()>0.42;let el2=document.getElementById('t'+id);if(win){balance+=amt*cur.p/100;el2.style.borderColor='#22c55e';el2.innerHTML+=`<br><b style="color:#22c55e">WIN +${(amt*cur.p/100).toFixed(0)}</b>`}else{balance-=amt;el2.style.borderColor='#ef4444';el2.innerHTML+=`<br><b style="color:#ef4444">LOSS -${amt}</b>`}document.getElementById('balText').innerText='$'+balance.toFixed(2);setTimeout(()=>{el2.remove()},4000);}},1000);}
+function openDep(){document.getElementById('depModal').classList.add('show');}
+function closeDep(){document.getElementById('depModal').classList.remove('show');}
+function deposit(){let a=document.getElementById('depAmt').value;if(!a)return alert('Weka amount');alert('STK Push sent to '+document.getElementById('phone').value+' KSh '+a+' - Tag Option style MPesa');closeDep();}
+renderAssets();calc();
 </script>
 </body>
-</html>
+  </html>
